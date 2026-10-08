@@ -26,23 +26,50 @@ public class MergeSort {
 	
 
 	
-	private static void mergeSort(int[] theArray, int left, int right) {
-		//**************************************************************
-		//*  Recursive Merge Sort                                      *
-		//*------------------------------------------------------------*
-		//*  1. Divide or partition the array section into 2 halves.   *
-		//*  2. Create a subArray for each partition (half)            *
-		//*  3. Merge the two subArrays to create one sorted array     *
-		//*  4. Replace the original array section with the merged     *
-		//*     array.                                                 *
-		//**************************************************************
+	private static int[] mergeSort(int[] theArray, int left, int right) {
+		
+		if(left==right) {
+			int[] newArray = {theArray[left]};
+			return newArray;
+		}
+		else {
+			int mid = (right - left)/2 + left;
+			int[] array1 = mergeSort(theArray,left,mid);
+			int[] array2 = mergeSort(theArray,mid+1,right);
+			
+			int[] array3 = new int[ array1.length + array2.length];
+			int index1 = 0;
+			int index2 = 0;
+			
+			for(int i = 0; i < array3.length; i++) {
+				if(index1 >= array1.length) {
+					array3[i] = array2[index2];
+					index2++;
+				}
+				else if(index2 >= array2.length) {
+					array3[i] = array1[index1];
+					index1++;
+				}
+				else {
+					if(array1[index1] <= array2[index2]) {
+						array3[i] = array1[index1];
+						index1++;
+					}
+					else {
+						array3[i] = array2[index2];
+						index2++;
+					}
+				}
+			}
+			return array3;
+		}
 
 	}
 	
 	public static void mergeSort(int[] array) {
-		//**********************************************
-		//*  Class Wrapper for the recursive mergeSort *
-		//**********************************************
-		mergeSort(array,0,array.length-1);
+		int[] newArray = mergeSort(array,0,array.length-1);
+		for(int i = 0; i < newArray.length; i++) {
+			array[i] = newArray[i];
+		}
 	}
 }
